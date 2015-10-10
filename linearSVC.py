@@ -1,9 +1,8 @@
 import pandas as pd
-import numpy as np
 from sklearn.svm import LinearSVC
 
 
-def classifyLSVC(train_file="train.csv", test_file ="test.csv",estimators=50):
+def classifyLSVC(train_file="train.csv", test_file ="test.csv"):
     # Read competition data files:
     train = pd.read_csv(train_file)
     test  = pd.read_csv(test_file)

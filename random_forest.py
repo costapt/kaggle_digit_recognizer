@@ -1,11 +1,10 @@
-import numpy as np
-import read_dataset
+import read_dataset as rd
 from sklearn.ensemble import RandomForestClassifier
 
-def classifyRF(estimators=50):
+def classifyRF(train_file="train.csv", test_file ="test.csv", estimators=50):
     #So, let's classifiy this thing. Reading the Features and then the test.
-    features,label = read_train()
-    test_data = read_test()
+    features,label = rd.read_train(file_name=train_file)
+    test_data = rd.read_test(file_name=test_file)
 
     #Creating the classifier. It has a ton of parameters, but since this a hard and fast one, here you go.
     rfc = RandomForestClassifier(n_estimators = estimators)
