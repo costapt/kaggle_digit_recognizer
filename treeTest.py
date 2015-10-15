@@ -8,6 +8,7 @@ from sklearn import cross_validation
 # loading training data
 print('Loading training data')
 X,y = rd.read_train()
+X,y = rd.nudge_dataset(X,y)
 
 scores = []
 scores_std = []
@@ -23,7 +24,7 @@ for tree in forests:
     #score = cross_validation.cross_val_score(classifier, X, y)
     #scores.append(np.mean(score))
     #scores_std.append(np.std(score))
-    name = "plots/RandomForest_{}_trees.png".format(tree)
+    name = "plots_extended/RandomForest_{}_trees.png".format(tree)
     e.evaluate_classifier(classifier,X,y, name=name)
 
 #print('Score: ', np.array(scores))

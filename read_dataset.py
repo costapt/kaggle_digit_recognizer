@@ -1,6 +1,7 @@
 import csv
 import random
 import numpy as np
+from scipy.ndimage import convolve
 
 def split(X,y,n):
     if n > 0:
@@ -44,11 +45,40 @@ def read_test(file_name='test.csv', limit=-1):
     X,_ = split(X,y,limit)
     return X
 
+def nudge_dataset(X, y):
+    """
+    This produces a dataset 5 times bigger than the original one,
+    by moving the 8x8 images in X around by 1px to left, right, down, up
+    """
+    direction_vectors = [
+        [[0, 1, 0],
+         [0, 0, 0],
+         [0, 0, 0]],
+
+        [[0, 0, 0],
+         [1, 0, 0],
+         [0, 0, 0]],
+
+        [[0, 0, 0],
+         [0, 0, 1],
+         [0, 0, 0]],
+
+        [[0, 0, 0],
+         [0, 0, 0],
+         [0, 1, 0]]]
+
+    shift = lambda x, w: convolve(x.reshape((28, 28)), mode='constant',
+                                  weights=w).ravel()
+    X = np.concatenate([X] +
+                       [np.apply_along_axis(shift, 1, X, vector)
+                        for vector in direction_vectors])
+    y = np.concatenate([y for _ in range(5)], axis=0)
+    return X, y
+
 if __name__ == '__main__':
 
     X,y = read_train(limit=-1)
     print(len(X))
     print(len(y))
-
-    X = read_test(limit=-1)
-    print(len(X))
+    X,y = nudge_dataset(X,y)
+    print(len(X),len(y))
