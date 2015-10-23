@@ -58,3 +58,4 @@ target/
 
 test.csv
 train.csv
+*.csv
