@@ -17,7 +17,6 @@ def classifyRF(train_file="train.csv", test_file ="test.csv", trees=70):
     print("Training classifier")
     rfc.fit(X, y)
     predictions = rfc.predict(test_data)
-    print(len(predictions))
 
     #Most submitions are cute with a CSV. Might as well learn how to do it.
     pd.DataFrame({"ImageId": range(1,len(predictions)+1), "Label": predictions}).to_csv('submit.csv', index=False, header=True)
