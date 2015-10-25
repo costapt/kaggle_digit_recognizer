@@ -75,6 +75,36 @@ def nudge_dataset(X, y):
     y = np.concatenate([y for _ in range(5)], axis=0)
     return X, y
 
+def scale(X):
+    return (X - np.min(X, 0)) / (np.max(X, 0) + 0.0001)  # 0-1 scaling
+
+def get_train_data(limit=-1,augment=True,do_scale=True):
+    print('Loading train data')
+    X,y = read_train(limit=limit)
+    if augment:
+        print('Augmenting data set')
+        X,y = nudge_dataset(X,y)
+    if do_scale:
+        print('Scaling data')
+        X = scale(X)
+    return X,y
+
+def get_test_data(limit=-1,do_scale=True):
+    print('Loading test data')
+    test_X = read_test(limit=limit)
+    if do_scale:
+        print('Scaling data')
+        test_X = scale(test_X)
+
+    return test_X
+
+def get_train_and_test_data(train_limit=-1,test_limit=-1):
+    X,y = get_train_data(train_limit)
+    print('Loading test data')
+    test_X = read_test(limit=test_limit)
+    test_X = scale(test_X)
+    return X,y,test_X
+
 if __name__ == '__main__':
 
     X,y = read_train(limit=-1)
